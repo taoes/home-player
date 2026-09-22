@@ -1,7 +1,17 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { games, categories } from '../data/games.js'
 import GameCard from '../components/GameCard.vue'
+
+onMounted(() => {
+  // 动态加载不蒜子访问统计：首页挂载后注入，加载失败时计数自动隐藏，不影响其他内容
+  if (document.getElementById('busuanzi_script')) return
+  const s = document.createElement('script')
+  s.id = 'busuanzi_script'
+  s.async = true
+  s.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
+  document.body.appendChild(s)
+})
 
 const keyword = ref('')
 const activeCategory = ref('全部')
@@ -118,6 +128,10 @@ function pickCategory(cat) {
 
     <footer class="footer">
       <p>家庭游乐场 · 陪孩子、陪父母度过欢乐时光 🧡</p>
+      <p class="busuanzi" style="margin-top: 6px">
+        <span id="busuanzi_container_site_pv" style="display: none">🏠 本站总访问 <span id="busuanzi_value_site_pv">0</span> 次</span>
+        <span id="busuanzi_container_site_uv" style="display: none">&nbsp;· 👥 访客 <span id="busuanzi_value_site_uv">0</span> 人</span>
+      </p>
     </footer>
   </div>
 </template>
