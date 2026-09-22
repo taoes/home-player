@@ -120,8 +120,8 @@ function roll() {
   clackTimer = setInterval(() => {
     playClack()
     values.value = Array.from({ length: count.value }, () => Math.floor(Math.random() * 6) + 1)
-  }, 110)
-  // 850ms 后落定
+  }, 160)
+  // 1500ms 后落定
   rollTimer = setTimeout(() => {
     clearInterval(clackTimer)
     const final = Array.from({ length: count.value }, () => Math.floor(Math.random() * 6) + 1)
@@ -136,17 +136,25 @@ function roll() {
       time: new Date().toLocaleTimeString('zh-CN', { hour12: false }),
     })
     if (voiceOn.value && speechSupported) {
-      const parts = final.map((v) => numToChinese(v)).join('、')
-      speak(`${parts}，共${numToChinese(total)}`, { rate: 0.85 })
+      if (final.length === 1) {
+        speak(numToChinese(final[0]), { rate: 0.85 })
+      } else {
+        const parts = final.map((v) => numToChinese(v)).join('、')
+        speak(`${parts}，共${numToChinese(total)}`, { rate: 0.85 })
+      }
     }
-  }, 850)
+  }, 1500)
 }
 
 function replayResult() {
   const last = history.value[0]
   if (!last || !voiceOn.value) return
-  const parts = last.values.map((v) => numToChinese(v)).join('、')
-  speak(`${parts}，共${numToChinese(last.total)}`, { rate: 0.8 })
+  if (last.values.length === 1) {
+    speak(numToChinese(last.values[0]), { rate: 0.8 })
+  } else {
+    const parts = last.values.map((v) => numToChinese(v)).join('、')
+    speak(`${parts}，共${numToChinese(last.total)}`, { rate: 0.8 })
+  }
 }
 
 onBeforeUnmount(() => {
@@ -296,7 +304,7 @@ const diceClass = computed(() => ({
 .dice-area { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 .dice { width: 64px; height: 64px; border-radius: 14px; border: 1.5px solid; box-shadow: var(--shadow); display: grid; place-items: center; transition: transform 0.1s; }
 .dice--round { border-radius: 50%; }
-.dice--rolling { animation: dice-shake 0.4s ease-in-out infinite; }
+.dice--rolling { animation: dice-shake 0.7s ease-in-out infinite; }
 @keyframes dice-shake {
   0%, 100% { transform: translateY(0) rotate(0); }
   25% { transform: translateY(-6px) rotate(-8deg); }
