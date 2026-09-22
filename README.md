@@ -76,6 +76,46 @@ npm run build
 npm run preview
 ```
 
+## 自行 Fork 部署
+
+想把游乐场部署到自己的 GitHub Pages？按以下步骤操作：
+
+1. **Fork 仓库**：点击本仓库右上角 `Fork` 按钮，复制到自己的 GitHub 账号下。
+
+2. （可选）**重命名仓库**：在 Fork 后的仓库 `Settings → Repository name` 改成你喜欢的名字（如 `my-home-games`）。仓库名会决定 Pages 的访问路径。
+
+3. **修改部署路径**：编辑 [.github/workflows/deploy.yml](.github/workflows/deploy.yml)，把 `BASE_URL` 改成你的仓库名对应的子路径：
+
+   ```yaml
+   env:
+     BASE_URL: /my-home-games/   # 格式：/<你的仓库名>/
+   ```
+
+   > 若使用自定义域名或部署到根路径，把 `BASE_URL` 设为 `/`。
+
+4. **提交改动并推送**：
+
+   ```bash
+   git add .github/workflows/deploy.yml
+   git commit -m "ci: 调整为自己的 Pages 路径"
+   git push
+   ```
+
+5. **配置 Pages 源**：在仓库 `Settings → Pages → Build and deployment → Source` 选 `Deploy from a branch`，分支选 `pages`、目录选 `/ (root)`，保存。
+
+6. **打 tag 触发自动部署**：
+
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+
+   推送 tag 后，GitHub Actions 会自动安装依赖、构建并把产物发布到 `pages` 分支。
+
+7. **访问你的站点**：约 1 分钟后打开 `https://<你的用户名>.github.io/<你的仓库名>/`，即可看到专属的家庭游乐场。
+
+> 💡 后续每次更新代码后，只要打一个新 tag（如 `v1.0.1`、`v1.1.0`）并推送，就会自动重新构建部署，无需手动操作。
+
 ## 扩展新游戏
 
 1. 在 `src/games/` 下新建 `XxxGame.vue`，遵循 `setup → playing → finished` 三段式
