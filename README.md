@@ -2,7 +2,7 @@
 
 > 全家一起玩的小游戏集合。无广告、无内购、打开即玩，适合老人和孩子一起参与。
 
-🎮 **在线演示**：<https://taoes.github.io/home-player/#/>
+🎮 **在线演示**：<https://taoes.github.io/home-player>
 
 ## 项目目标
 
