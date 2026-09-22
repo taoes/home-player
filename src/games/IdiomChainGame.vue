@@ -128,7 +128,7 @@ function pick(option) {
   pendingPick.value = ''
   if (correct) {
     score.value += 1
-    say(`答对了！${current.value.q}，${current.value.a}`, 0.85)
+    say('答对了！', 1)
   } else {
     wrongFlash.value = option
     setTimeout(() => (wrongFlash.value = ''), 400)
