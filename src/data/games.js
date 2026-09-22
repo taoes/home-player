@@ -4,6 +4,7 @@ import ArithmeticGame from '../games/ArithmeticGame.vue'
 import SimonSaysGame from '../games/SimonSaysGame.vue'
 import MimicActionGame from '../games/MimicActionGame.vue'
 import IdiomChainGame from '../games/IdiomChainGame.vue'
+import DiceGame from '../games/DiceGame.vue'
 
 // 家庭游戏清单：轻度、休闲、无广告无内购，适合全家一起玩
 export const games = [
@@ -90,6 +91,20 @@ export const games = [
     players: '2 人以上',
     age: '5+',
     component: IdiomChainGame,
+  },
+  {
+    id: 'dice',
+    name: '掷骰子',
+    tagline: '桌游好帮手，可配置骰子',
+    description:
+      '可配置数量（1~6 颗）、颜色、形状和点数样式的骰子工具。投掷时有滚动音效并语音播报点数和总数，预设大富翁、单骰、五骰等模式，玩大富翁、飞行棋时随开随用。',
+    icon: '🎲',
+    gradient: ['#f87171', '#dc2626'],
+    category: '工具',
+    tags: ['音效', '桌游辅助'],
+    players: '1 人以上',
+    age: '3+',
+    component: DiceGame,
   },
 ]
 
