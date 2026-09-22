@@ -5,6 +5,7 @@ import SimonSaysGame from '../games/SimonSaysGame.vue'
 import MimicActionGame from '../games/MimicActionGame.vue'
 import IdiomChainGame from '../games/IdiomChainGame.vue'
 import DiceGame from '../games/DiceGame.vue'
+import KeyboardGame from '../games/KeyboardGame.vue'
 
 // 家庭游戏清单：轻度、休闲、无广告无内购，适合全家一起玩
 export const games = [
@@ -105,6 +106,20 @@ export const games = [
     players: '1 人以上',
     age: '3+',
     component: DiceGame,
+  },
+  {
+    id: 'keyboard',
+    name: '按键盘',
+    tagline: '敲按键识字听音',
+    description:
+      '按下键盘任意键，屏幕键盘同步高亮并发出敲击声 + 语音播报。覆盖 0~9、英文字母、加减号、大于小于号、小括号、中括号、顿号（兼容中文输入法）。',
+    icon: '⌨️',
+    gradient: ['#60a5fa', '#2563eb'],
+    category: '益智',
+    tags: ['键盘', '识字', '音效'],
+    players: '1 人',
+    age: '3+',
+    component: KeyboardGame,
   },
 ]
 
