@@ -1,0 +1,41 @@
+name: Deploy to Pages
+
+# 仅在打新 tag（v 开头，如 v1.0.0）时触发构建并部署到 pages 分支
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # GitHub Pages 仓库级地址为 https://<user>.github.io/<repo>/，需设子路径 base
+          BASE_URL: /home-player/
+
+      - name: Deploy to pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: pages
+          # 每次用 orphan commit 覆盖，保持 pages 分支历史干净
+          force_orphan: true
