@@ -63,6 +63,7 @@ const current = ref(null) // { q, a, options }
 const feedback = ref(null) // { picked, correct, a }
 const usedQs = ref(new Set())
 const wrongFlash = ref('')
+const pendingPick = ref('') // 两步选择：第一次点击只播报读音，第二次点击才提交判定
 
 function say(text, rate = 0.8) {
   if (voiceOn.value && speechSupported) speak(text, { rate })
@@ -115,8 +116,16 @@ function nextRound() {
 
 function pick(option) {
   if (!current.value || feedback.value) return
+  // 两步逻辑：第一次点击只语音播报该选项，再次点击同一选项才提交判定（照顾不识字的孩子）
+  if (pendingPick.value !== option) {
+    pendingPick.value = option
+    say(option, 0.8)
+    return
+  }
+  // 第二次点击同一选项 → 提交
   const correct = option === current.value.a
   feedback.value = { picked: option, correct, a: current.value.a }
+  pendingPick.value = ''
   if (correct) {
     score.value += 1
     say(`答对了！${current.value.q}，${current.value.a}`, 0.85)
@@ -182,12 +191,14 @@ onBeforeUnmount(cancelSpeech)
         <button v-if="speechSupported && voiceOn && current" class="replay-btn" @click="say(current.q, 0.7)">🔊 再听一遍</button>
       </div>
 
+      <p class="pick-tip">👆 点一下听读法，再点一次确认答案</p>
       <div class="options">
         <button
           v-for="opt in (current ? current.options : [])"
           :key="opt"
           class="option"
           :class="{
+            'option--pending': !feedback && pendingPick === opt,
             'option--correct': feedback && opt === current.a,
             'option--wrong': feedback && opt === feedback.picked && !feedback.correct,
             'option--shake': wrongFlash === opt,
@@ -256,4 +267,6 @@ onBeforeUnmount(cancelSpeech)
 .result-score { font-size: 16px; color: var(--text); margin-top: 8px; }
 .result-score strong { font-size: 28px; color: var(--primary-deep); }
 @media (max-width: 560px) { .idiom { padding: 14px; } .stage__q { font-size: 21px; } .option { padding: 14px 8px; font-size: 15px; } }
+.option--pending { background: #fef3c7; border-color: #f59e0b; color: #92400e; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.25); }
+.pick-tip { text-align: center; font-size: 13px; font-weight: 700; color: var(--text-muted); margin: 0; }
 </style>
